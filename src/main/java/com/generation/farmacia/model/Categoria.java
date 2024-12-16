@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_categoria")
+@Table(name = "tb_categorias")
 public class Categoria {
     
     @Id
@@ -30,7 +30,7 @@ public class Categoria {
     @Size(min = 5, max = 100)
     private String descricao;
     
-    // @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    // @JsonIgnoreProperties("categoria")
-    // private List<Produto> produto;
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("categoria")
+    private List<Produto> produto;
 }
