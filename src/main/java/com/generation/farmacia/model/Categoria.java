@@ -31,10 +31,6 @@ public class Categoria {
     @Size(min = 5, max = 100)
     private String nome;
     
-    @NotNull
-    @Size(min = 5, max = 100)
-    private String descricao;
-    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("categoria")
     private List<Produto> produtos;

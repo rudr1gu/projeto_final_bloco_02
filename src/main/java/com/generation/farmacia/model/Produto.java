@@ -1,5 +1,7 @@
 package com.generation.farmacia.model;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
@@ -24,7 +26,7 @@ public class Produto {
     private long id;
     
     @NotNull
-    @Size(min = 5, max = 100)
+    @Size(min = 3, max = 100)
     private String nome;
     
     @NotNull
@@ -32,7 +34,10 @@ public class Produto {
     
     @NotNull
     private int quantidade;
-    
+
+    @NotNull
+    private Date validade;
+
     @ManyToOne
     @JsonIgnoreProperties("produtos")
     private Categoria categoria;
