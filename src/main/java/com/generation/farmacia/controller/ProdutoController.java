@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.farmacia.model.Produto;
-import com.generation.farmacia.repository.ProdutoRepository;
+import com.generation.farmacia.service.ProdutoService;
 
 import jakarta.validation.Valid;
 
@@ -26,35 +26,35 @@ import jakarta.validation.Valid;
 public class ProdutoController {
         
         @Autowired
-        private ProdutoRepository produtoRepository;
-        
+        private ProdutoService produtoService;
+
         @GetMapping
         public ResponseEntity<List<Produto>> getAll(){
-            return ResponseEntity.ok(produtoRepository.findAll());
+            return ResponseEntity.ok(produtoService.findAll());
         }
         
         @GetMapping("/{id}")
         public ResponseEntity<Produto> getById(@PathVariable long id){
-            return produtoRepository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+            return produtoService.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
         }
         
         @GetMapping("/nome/{nome}")
         public ResponseEntity<List<Produto>> getByName(@PathVariable String nome){
-            return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
+            return ResponseEntity.ok(produtoService.findByName(nome));
         }
         
         @PostMapping
         public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto){
-            return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
         }
         
         @PutMapping
         public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto){
-            return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+            return ResponseEntity.status(HttpStatus.OK).body(produtoService.save(produto));
         }
         
         @DeleteMapping("/{id}")
         public void delete(@PathVariable long id) {
-            produtoRepository.deleteById(id);
+            produtoService.deleteById(id);
         }
 }
