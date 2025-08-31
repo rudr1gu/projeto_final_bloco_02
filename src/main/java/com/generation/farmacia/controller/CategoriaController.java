@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.farmacia.model.Categoria;
-import com.generation.farmacia.repository.CategoriaRepository;
+import com.generation.farmacia.service.CategoriaService;
 
 import jakarta.validation.Valid;
 
@@ -32,41 +32,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CategoriaController {
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private CategoriaService categoriaService;
 
     @GetMapping
     public ResponseEntity<List<Categoria>> getAll() {
-        return ResponseEntity.ok(categoriaRepository.findAll());
+        return ResponseEntity.ok(categoriaService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getById(@RequestParam long id) {
-        return categoriaRepository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+        return categoriaService.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Categoria>> getByName(@RequestParam String nome) {
-        return ResponseEntity.ok(categoriaRepository.findAllByNomeContainingIgnoreCase(nome));
+        return ResponseEntity.ok(categoriaService.findByName(nome));
     }
 
     @PostMapping
     public ResponseEntity<Categoria> post(@Valid @RequestBody Categoria categoria) {
-        return ResponseEntity.status(201).body(categoriaRepository.save(categoria));
+        return ResponseEntity.status(201).body(categoriaService.save(categoria));
     }
 
     @PutMapping
     public ResponseEntity<Categoria> put(@Valid @RequestBody Categoria categoria) {
-        return ResponseEntity.status(200).body(categoriaRepository.save(categoria));
+        return ResponseEntity.status(200).body(categoriaService.save(categoria));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        Optional<Categoria> categoria = categoriaService.findById(id);
         if (categoria.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        categoriaRepository.deleteById(id);
+        categoriaService.deleteById(id);
     } 
 }

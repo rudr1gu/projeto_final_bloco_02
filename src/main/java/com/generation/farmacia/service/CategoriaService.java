@@ -1,6 +1,7 @@
 package com.generation.farmacia.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,14 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
-    public Categoria findById(Long id) {
-        return categoriaRepository.findById(id).orElse(null);
+    public Optional<Categoria> findById(Long id) {
+        return categoriaRepository.findById(id);
     }
+
+    public List<Categoria> findByName(String nome) {
+        return categoriaRepository.findAllByNomeContainingIgnoreCase(nome);
+    }
+    
 
     public Categoria save(Categoria categoria) {
         return categoriaRepository.save(categoria);
